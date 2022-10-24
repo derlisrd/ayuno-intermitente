@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-nativ
 import { useApp } from '../../Context/AppContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function Login() {
+export default function Login({ navigation }) {
 
  const {dimensions} =  useApp()
 
@@ -84,7 +84,7 @@ export default function Login() {
         <TextInput placeholder='password' style={styles.input_text} />
         <TouchableOpacity
         style={styles.button}
-        onPress={()=>{}}
+        onPress={()=>{navigation.navigate('Home')}}
       >
         <Text style={styles.text_button}>LOGIN</Text>
       </TouchableOpacity>
