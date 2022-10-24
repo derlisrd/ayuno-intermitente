@@ -1,13 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { useApp } from '../../Context/AppContext';
+//import { useApp } from '../../Context/AppContext';
+import { Dimensions } from 'react-native'
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useLogin } from '../../Context/LoginProvider';
 
-export default function Login({ navigation }) {
 
- const {dimensions} =  useApp()
+const {width} = Dimensions.get('window')
 
- const styles = StyleSheet.create({
+function Login({ navigation }) {
+
+    //const {dimensions} =  useApp()
+    const {LogIn,setearLogin} = useLogin()
+    const [form,setForm] = useState({
+        username_user:'',
+        password_user:''
+    })
+    
+    const sendLogin = async()=>{
+        let res = await LogIn(form)
+
+        if(res.response){
+            let u = res.results[0]
+            setearLogin({
+                username_user:u.username_user,
+                id:u.id_user,
+                email:u.email_user,
+                name:u.name_user,
+                token_user:u.token_user,
+                login:true
+            })
+            navigation.navigate('Home')
+        }
+    }
+
+
+  return (
+    <View style={styles.container}>
+        <View style={styles.fondo}>
+            <Text style={styles.h1}>Login</Text>
+            <Text style={styles.h6}>Usa tus credenciales para ingresar</Text>
+            <Ionicons name="fast-food-outline" size={32} color="green" />
+        </View>
+      <View style={styles.form}>
+      
+      <View style={styles.view_inputs}>
+        <TextInput placeholder='username' onChangeText={e=> setForm({...form,username_user: e})} style={styles.input_text} />
+        <TextInput placeholder='password' autoCapitalize = "none" onChangeText={e=> setForm({...form,password_user: e})} style={styles.input_text} />
+        <TouchableOpacity
+        style={styles.button}
+        onPress={sendLogin}
+      >
+        <Text style={styles.text_button}>LOGIN</Text>
+      </TouchableOpacity>
+      </View>
+      </View>
+     </View>
+  );
+}
+
+
+
+
+const styles = StyleSheet.create({
     button:{
         alignItems: "center",
         backgroundColor: "#696969",
@@ -21,7 +76,7 @@ export default function Login({ navigation }) {
     fondo:{
         backgroundColor:'#d4d4d4',
         flex:1,
-        width: dimensions.width,
+        width: width,
         padding: 10,
         justifyContent:'center',
         alignItems:'center'
@@ -30,7 +85,7 @@ export default function Login({ navigation }) {
         flex:3,
         justifyContent:'flex-start',
         alignItems:'center',
-        width: dimensions.width,
+        width: width,
         padding: 10,
         margin: 15,
     },
@@ -70,26 +125,4 @@ export default function Login({ navigation }) {
 })
 
 
-  return (
-    <View style={styles.container}>
-        <View style={styles.fondo}>
-            <Text style={styles.h1}>Login</Text>
-            <Text style={styles.h6}>Usa tus credenciales para ingresar</Text>
-            <Ionicons name="fast-food-outline" size={32} color="green" />
-        </View>
-      <View style={styles.form}>
-      
-      <View style={styles.view_inputs}>
-        <TextInput placeholder='email' style={styles.input_text} />
-        <TextInput placeholder='password' style={styles.input_text} />
-        <TouchableOpacity
-        style={styles.button}
-        onPress={()=>{navigation.navigate('Home')}}
-      >
-        <Text style={styles.text_button}>LOGIN</Text>
-      </TouchableOpacity>
-      </View>
-      </View>
-     </View>
-  );
-}
+export default Login;

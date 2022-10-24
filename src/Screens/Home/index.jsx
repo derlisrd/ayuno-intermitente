@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, SafeAreaView } from 'react-native';
 
 function Home() {
   return (
-    <View>
+    <SafeAreaView>
       <Text>HOME</Text>
-     </View>
+     </SafeAreaView>
   );
 }
 

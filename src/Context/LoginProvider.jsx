@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState,useEffect,useCallback } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { APICALLER } from '../Services/api';
 
 
 const ContextLogin = createContext()
@@ -9,17 +10,32 @@ const LoginProvider = ({children}) => {
 
     const [userData,setUserData] = useState({})
   
-    const getData = useCallback(   async () => {
+
+    const LogIn = async(f)=>{
+      let res = await APICALLER.login(f)
+      return res;
+    }
+
+
+    const setearLogin = async(f)=>{
+      setUserData(f)
+      await AsyncStorage.setItem('userData',JSON.stringify(f))
+    }
+
+
+    const getData = useCallback(async () => {
       try {
-        const value = await AsyncStorage.getItem('@userData')
+        const value = await AsyncStorage.getItem('userData')
         if(value !== null) {
             let user = {
-              email:null,
-              id:null,
-              name:null,
-              token_user:null
+              username:'',
+              id:'',
+              email:'',
+              name:'',
+              token_user:'',
+              login:true
             }
-            setUserData(user)
+            setearLogin(user)
         }
       } catch(e) {
         // error reading value
@@ -27,7 +43,7 @@ const LoginProvider = ({children}) => {
     },[]);
 
     const values = {
-        userData
+        userData,LogIn,setearLogin
     }
 
     useEffect(() => {
@@ -48,8 +64,8 @@ const LoginProvider = ({children}) => {
 }
 
 export const useLogin = ()=>{
-    const {userData} = useContext(ContextLogin)
-    return {userData}
+    const {userData,LogIn,setearLogin} = useContext(ContextLogin)
+    return {userData,LogIn,setearLogin}
 }
 
 
