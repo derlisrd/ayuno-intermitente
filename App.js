@@ -1,15 +1,17 @@
 //import { StatusBar } from 'expo-status-bar';
 //import { StyleSheet, Text, View } from 'react-native';
-import Screens from './src';
-import AppProvider from './src/Context/AppContext';
-import LoginProvider from './src/Context/LoginProvider';
-
+import Screens from "./src/Screens";
+import AppProvider from "./src/Context/AppContext";
+import LoginProvider from "./src/Context/LoginProvider";
+import { NavigationContainer } from '@react-navigation/native';
 
 export default function App() {
   return (
     <AppProvider>
       <LoginProvider>
-        <Screens />
+        <NavigationContainer>
+          <Screens />
+        </NavigationContainer>
       </LoginProvider>
     </AppProvider>
   );

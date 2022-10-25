@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 //import { useApp } from '../../Context/AppContext';
 import { Dimensions } from 'react-native'
@@ -11,7 +11,7 @@ const {width} = Dimensions.get('window')
 function Login({ navigation }) {
 
     //const {dimensions} =  useApp()
-    const {LogIn,setearLogin} = useLogin()
+    const {LogIn,setearLogin,userData} = useLogin()
     const [form,setForm] = useState({
         username_user:'',
         password_user:''
@@ -30,10 +30,26 @@ function Login({ navigation }) {
                 token_user:u.token_user,
                 login:true
             })
-            navigation.navigate('Home')
+            navigation.navigate('HomeStacks')
         }
     }
 
+    const verificar = async()=>{
+        if(userData.login){
+            navigation.navigate('HomeStacks')
+        }
+    }
+
+
+    useEffect(() => {
+        const ca = new AbortController(); let isActive = true;
+        if (isActive) {
+          verificar();
+        }
+        return () => {
+          isActive = false;
+          ca.abort();};
+      }, [verificar]);
 
   return (
     <View style={styles.container}>
@@ -46,7 +62,7 @@ function Login({ navigation }) {
       
       <View style={styles.view_inputs}>
         <TextInput placeholder='username' onChangeText={e=> setForm({...form,username_user: e})} style={styles.input_text} />
-        <TextInput placeholder='password' autoCapitalize = "none" onChangeText={e=> setForm({...form,password_user: e})} style={styles.input_text} />
+        <TextInput placeholder='password' secureTextEntry={true} autoCapitalize = "none" onChangeText={e=> setForm({...form,password_user: e})} style={styles.input_text} />
         <TouchableOpacity
         style={styles.button}
         onPress={sendLogin}

@@ -33,9 +33,11 @@ const LoginProvider = ({children}) => {
               email:'',
               name:'',
               token_user:'',
-              login:true
+              login:false
             }
             setearLogin(user)
+        }else{
+          setearLogin(JSON.parse(value))
         }
       } catch(e) {
         // error reading value

@@ -3,9 +3,9 @@ import { View, Text, SafeAreaView } from 'react-native';
 
 function Home() {
   return (
-    <SafeAreaView>
+    <View style={{ flex:1,justifyContent:'center',alignItems:'center' }}>
       <Text>HOME</Text>
-     </SafeAreaView>
+     </View>
   );
 }
 
