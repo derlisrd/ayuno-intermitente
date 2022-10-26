@@ -7,13 +7,15 @@ import Home from "./Home";
 import Profile from "./Profile";
 import History from "./History";
 import { useLogin } from "../Context/LoginProvider";
+import LoadingScreen from "./LoadingScreen";
+import colors from "../App/colors";
 
 
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-function HomeStacks() {
+function LoggedInScreen() {
   return (
     <Tab.Navigator
     >
@@ -21,21 +23,24 @@ function HomeStacks() {
         options={{
           headerShown:false,
           tabBarLabel: 'Home',
+          tabBarActiveTintColor:colors.primary,
           tabBarIcon: ({ color }) => (
             <FontAwesome name="home" color={color} size={26} />
-          ),}}
+          )}}
       />
       <Tab.Screen name="History" component={History} 
         options={{
           headerShown:false,
           tabBarLabel: 'History',
+          tabBarActiveTintColor:colors.primary,
           tabBarIcon: ({ color }) => (
             <Octicons name="history" size={24} color={color} />
-          ),}}
+          )}}
       />
       <Tab.Screen name="Profile" component={Profile} 
         options={{
           headerShown:false,
+          tabBarActiveTintColor:colors.primary,
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
             <FontAwesome name="user-o" color={color} size={26} />
@@ -48,19 +53,20 @@ function HomeStacks() {
 }
 
 function Screens() {
-  const { userData } = useLogin();
+
+
+  const { userData,loading } = useLogin();
   const { login } = userData;
 
 
-
+  if(loading){
+    return <LoadingScreen />
+  }
 
   return (
     <Stack.Navigator>
-      
-        
         <Stack.Screen name="Login" component={Login} options={{ headerShown:false }} /> 
-        <Stack.Screen name="HomeStacks" component={HomeStacks} options={{ headerShown:false }} />
-      
+        <Stack.Screen name="LoggedInScreen" component={LoggedInScreen} options={{ headerShown:false }} />
     </Stack.Navigator>
   );
 }

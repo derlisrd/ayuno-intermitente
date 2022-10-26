@@ -9,23 +9,26 @@ const LoginProvider = ({children}) => {
 
 
     const [userData,setUserData] = useState({})
-  
+    const [loading,setLoading] = useState(true)
 
     const LogIn = async(f)=>{
       let res = await APICALLER.login(f)
       return res;
     }
 
-
+    console.log(userData)
     const setearLogin = async(f)=>{
       setUserData(f)
+      console.log(f)
       await AsyncStorage.setItem('userData',JSON.stringify(f))
     }
 
 
     const getData = useCallback(async () => {
+      setLoading(true)
       try {
         const value = await AsyncStorage.getItem('userData')
+        
         if(value !== null) {
             let user = {
               username:'',
@@ -37,15 +40,18 @@ const LoginProvider = ({children}) => {
             }
             setearLogin(user)
         }else{
-          setearLogin(JSON.parse(value))
+          let parsed = JSON.parse(value)
+          setearLogin(parsed)
+          console.log(parsed.token_user)
         }
       } catch(e) {
-        // error reading value
+        console.log(e)
       }
+      setLoading(false)
     },[]);
 
     const values = {
-        userData,LogIn,setearLogin
+        userData,LogIn,setearLogin,loading
     }
 
     useEffect(() => {
@@ -66,8 +72,8 @@ const LoginProvider = ({children}) => {
 }
 
 export const useLogin = ()=>{
-    const {userData,LogIn,setearLogin} = useContext(ContextLogin)
-    return {userData,LogIn,setearLogin}
+    const {userData,LogIn,setearLogin,loading} = useContext(ContextLogin)
+    return {userData,LogIn,setearLogin,loading}
 }
 
 

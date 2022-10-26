@@ -1,5 +1,6 @@
 import React from 'react'
 import {Text,StyleSheet, TouchableOpacity } from 'react-native';
+import colors from '../App/colors';
 
 const Button = ({children, ...rest}) => {
   return (
@@ -19,7 +20,7 @@ const style = StyleSheet.create({
     button:{
         margin:18,
         padding:15,
-        backgroundColor:'#6c0',
+        backgroundColor:colors.primary,
         borderRadius:10
     },
     button_text:{

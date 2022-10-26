@@ -14,7 +14,22 @@ export const APICALLER = {
           return await res.data;
         } catch (error) {
           console.log(error);
-          const err = { results:null, response: `error`, message: error.message };
+          const err = { response:false,error:true, message: error };
+          return err;
+        }
+      },
+      validateToken: async (token) => {
+        try {
+          let tk = DescifrarTexto(token);
+          const res = await axios({
+            url: `${env.API_END_POINT}Auth/ValidateToken`,
+            method: "POST",
+            data: JSON.stringify({ token: tk }),
+            headers: { "X-Api-Token": XAPITOKEN },
+          });
+          return await res.data;
+        } catch (error) {
+          const err = [{ response:false,error:true, message: error }];
           return err;
         }
       },

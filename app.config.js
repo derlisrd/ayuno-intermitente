@@ -1,4 +1,6 @@
-{
+import 'dotenv/config'
+
+export default{
   "expo": {
     "name": "ayuno-intermitente",
     "slug": "ayuno-intermitente",
@@ -29,6 +31,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra":{
+      apikey: process.env.API_KEY
     }
   }
 }
